@@ -6,16 +6,26 @@ services:
     ports:
       - "5000:5000"
     environment:
-    - REDIS_HOST=redis
-    - REDIS_PORT=6379
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     depends_on:
-    - redis
+      - myredis
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
 
-  redis:
-    image: redis:alpine 
-    volumes:
-      - redis_data:/data
-
-  
+  myredis:
+    image: redis:alpine
+    volumes: 
+    - redis-data:/data 
+    
 volumes:
-  redis_data:
+  redis-data:
+
+
+
+    
